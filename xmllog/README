@@ -1,0 +1,18 @@
+This is a packet logger with xml output for libip_udp. To use it, do
+the following at the terminal where you want the packets to get logged
+from and do:
+
+$ export LOG_PACKETS=1
+
+So to log all packets, you have to do this at both the server and the client.
+Then start the logger, it will log to stdout:
+
+$ ./xmllog
+
+-----------
+BIG WARNING
+-----------
+
+We're not sure if the order of the logged packets is always right, therefore,
+don't trust this tool too much.
+
