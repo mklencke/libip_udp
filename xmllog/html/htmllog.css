@@ -1,0 +1,136 @@
+@media screen
+{
+
+	body
+	{
+		color: black;
+		background: white;
+
+		margin: 0em;
+		border: 0em;
+		padding: 1em;
+	}
+
+	h2
+	{
+		font-size: x-large;
+		color: rgb(160,0,0);
+		text-align: center;
+		font-weight: bold;
+	}
+
+/* Fonts */
+
+	div
+	{
+		font-family: "Bitstream Vera Sans", "Helvetica", "Arial", sans-serif;
+	}
+
+/*  */
+
+	div.log
+	{
+		font-size: large;
+		background: rgb(160,160,160);
+		width: 51.8em;
+	}
+
+	div.header
+	{
+		font-weight: bold;
+		width: 25em;
+		padding: 0.2em;
+		margin: 0.2em;
+	}
+
+	div.packet
+	{
+		width: 25em;
+		padding: 0.2em;
+		margin: 0.2em;
+		clear: both;
+	}
+
+	div.side1
+	{
+		float: left;
+	}
+
+	div.side2
+	{
+		float: right;
+	}
+
+	div.header.side1
+	{
+		background: rgb(255,255,191);
+	}
+
+	div.header.side2
+	{
+		background: rgb(255,255,191);
+	}
+
+	div.packet.side1
+	{
+		background: rgb(0,100,0);
+		color: rgb(255,255,255);
+		font-weight: bold;
+	}
+
+	div.packet.side2
+	{
+		background: rgb(0,0,160);
+		color: rgb(255,255,255);
+		font-weight: bold;
+	}
+
+	div.packet.side1.corrupted
+	{
+		background: rgb(160,0,0);
+		font-weight: bold;
+	}
+
+	div.packet.side2.corrupted
+	{
+		background: rgb(160,0,0);
+		font-weight: bold;
+	}
+
+	div.packet.side1.dropped
+	{
+		background: rgb(63,63,63);
+		font-weight: bold;
+	}
+
+	div.packet.side2.dropped
+	{
+		background: rgb(63,63,63);
+		font-weight: bold;
+	}
+
+	div.caption
+	{
+		color: rgb(160,160,160);
+		font-weight: bold;
+	}
+
+	div.info
+	{
+		float: left;
+		padding-left: 0.4em;
+	}
+
+	div.caption
+	{
+		width: 10em;
+		float: left;
+		clear: both;
+	}
+
+	div.float_end
+	{
+		height: 0.1em;
+		clear: both;
+	}
+}
