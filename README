@@ -1,0 +1,193 @@
+libip_udp README
+================
+
+--------
+Contents
+--------
+
+1. About libip_udp
+2. Compilation
+3. Testing
+4. Usage
+5. Provided Functions
+6. Guarantee
+7. Getting the Latest Version
+8. Future Versions
+9. Contact Information
+10. References
+
+
+------------------
+1. About libip_udp
+------------------
+
+The students at the Vrije Universiteit Amsterdam who are in their 3rd year of
+Computer Science must do computer networks practical work. They have to
+implement TCP and HTTP on top of an IP library that is given on Minix.
+
+Unfortunately, even though we respect Minix very much, development on that
+operating systems means that we can't use our favorite editors and revision
+control systems easily. Also, if we want to work at home, we need a native
+install, a VMWare installation or a Bochs installation. All have their little
+problems.
+
+Therefore, we wrote this library, which emulates the CN IP library on Linux.
+This is done by sending the IP packets over UDP on localhost.
+
+In minix, the current ethernet device has to be specified by setting the ETH
+environment variable. This works the same with libip_udp. The number is then
+used to create the UDP port. For example, if ETH contains "1", the UDP port
+will be 2810. Currently, up to 20 virtual ethernet devices can be created this
+way and they can all send packets to eachother.
+
+Virtual IP addresses are linked to virtual Ethernet devices using a very simple
+scheme. Ethernet device 1 has IP 192.168.0.1, 2 has 192.168.0.2, etc.
+
+Added benefits of using this library are:
+
+- You can use the GNU Debugger
+- (see Future Versions)
+
+
+--------------
+2. Compilation
+--------------
+
+Provided that you have the GNU C Compiler, just do:
+
+$ make
+$ cd origtest
+$ make
+
+
+----------
+3. Testing
+----------
+
+Once compiled, you can test the library by running the client and server
+programs in the "origtest" directory. These are directly taken from the CN IP
+library. Open two terminals. First, start the server in one of them:
+
+$ export ETH=2
+$ ./server
+
+Then, start the client in the other:
+
+$ export ETH=1
+$ ./client
+
+The client should now have sent a packet and the server should have received
+one.
+
+
+--------
+4. Usage
+--------
+
+The computer networks practicum tells you to make directory structure that
+looks like this:
+
+cn
+|-ip
+|-tcp
+|-http
+|-test
+
+Simply rename the ip directory to something else and then put a symlink to
+libip_udp in its place:
+
+$ cd cn
+$ mv ip ip_orig
+$ ln -s <path-to-libip_udp> ip
+
+Now you can use it like you would under Minix according to the CN practicum
+instructions. Keep in mind that the virtual IP addresses are 192.168.0.1,
+192.168.0.2, etc. Make sure your IP<x> environment variables and/or the
+#define statements in your code are set accordingly.
+
+
+---------------------
+5. Provided Functions
+---------------------
+
+The libip_udp library provides the following functions:
+
+- ip_init()
+- ip_send()
+- ip_receive()
+- inet_checksum()
+- inet_aton(), inet_ntoa()
+- signal()
+
+Also the following types can be used:
+
+- iphdr_t (do not use directly! only for sizeof())
+- ipaddr_t
+- u8_t, u16_t, u32_t
+
+Of course, standard UNIX functions like printf(), malloc() and free() can also
+be used because they are defined in POSIX.
+
+
+-------------
+6. Guarantee
+-------------
+
+This library is provided solely as an aid for doing the computer networks
+practicum. We, the authors, give no guarantee whatsoever that code developed
+using this library will work perfectly under Minix. Also, we have no
+affiliation (except being students) with the people of the CN practicum.
+
+MAKE SURE that your code works fine in the Minix environment before submitting
+it.
+
+Please mail us about any problems you encounter so we can fix them.
+
+
+-----------------------------
+7. Getting the Latest Version
+-----------------------------
+
+The latest release can be found on the website (see Contact Information). If
+you want to keep up to date on the development, you may check out the latest
+development revision from Subversion:
+
+$ svn co https://svn.klencke.net/libip_udp/trunk libip_udp
+
+
+------------------
+8. Future Versions
+------------------
+
+We are working on some new features for future version:
+
+- An IP monitor tool. This will allow you to have a nice overview of which
+  get sent when and with what data in them.
+- Packet dropping. There will be an environment variable that will allow you
+  to specify the "reliability" of the virtual link.
+- Packet insertion. A tool to insert extra packets that have nothing to do
+  with the current TCP connection. Your TCP library must be able to handle
+  this.
+
+
+----------------------
+9. Contact Information
+----------------------
+
+libip_udp is being developed by Marten Klencke <mklencke@cs.vu.nl> and
+Erik Bosman <ejbosman@cs.vu.nl>.
+
+Website  : http://www.cs.vu.nl/~mklencke/libip_udp.php
+E-Mail   : mklencke@cs.vu.nl
+
+
+-------------
+10. References
+-------------
+
+- http://www.cs.vu.nl/~cn/
+- http://www.cs.vu.nl/
+- http://www.cs.vu.nl/~ast/minix.html
+- http://www.vmware.com/
+- http://bochs.sourceforge.net/
+
