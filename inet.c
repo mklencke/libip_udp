@@ -3,7 +3,7 @@
 
 #include "inet.h"
 
-char ascii_ipaddr_buf[16];
+static char ascii_ipaddr_buf[16];
 
 ipaddr_t fake_inet_aton( const char *cp )
 {
