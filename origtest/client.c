@@ -2,8 +2,8 @@
 #include "inet.h"
 #include "ip.h"
 
-#define MINIXT1_1 "1"
-#define MINIXT1_2 "2"
+#define MINIXT1_1 "192.168.0.1"
+#define MINIXT1_2 "192.168.0.2"
 
 int main(void) {
   int len;
