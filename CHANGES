@@ -1,3 +1,15 @@
+Version 0.2
+(22 October 2004)
+http://svn.klencke.net/svn/libip_udp/tags/0.2
+---------------------------------------------
+
+- Packet Loss
+- Simple Monitor Tool
+- ANSI C Compile Fix
+- Specify real peer IP address
+- Specify real log IP address
+
+
 Version 0.1
 (18 October 2004)
 http://svn.klencke.net/svn/libip_udp/tags/0.1

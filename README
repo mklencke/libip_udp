@@ -106,6 +106,16 @@ instructions. Keep in mind that the virtual IP addresses are 192.168.0.1,
 192.168.0.2, etc. Make sure your IP<x> environment variables and/or the
 #define statements in your code are set accordingly.
 
+You can specify the virtual reliability of libip_udp with the PACKET_LOSS
+environment variable. Set it to a number between 0 and 100 that specifies
+the percentage of packets to be dropped.
+
+It is possible to connect two programs using libip_udp via the Internet or
+a LAN. To do this, set the REAL_PEER_IPADDR environment variable to the
+other side's IP address.
+
+The same is possible for the logger. The variable is named REAL_LOG_IPADDR.
+
 
 ---------------------
 5. Provided Functions
@@ -163,10 +173,6 @@ $ svn co http://svn.klencke.net/svn/libip_udp/trunk libip_udp
 We are working on some new features for future version:
 
 - Solaris and BSD Support
-- An IP monitor tool. This will allow you to have a nice overview of which
-  packets get sent when and with what data in them.
-- Packet dropping. There will be an environment variable that will allow you
-  to specify the "reliability" of the virtual link.
 - Packet insertion. A tool to insert extra packets that have nothing to do
   with the current TCP connection. Your TCP library must be able to handle
   this.

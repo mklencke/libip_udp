@@ -18,6 +18,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
+#include <sys/time.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -25,6 +26,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <errno.h>
+#include <ctype.h>
 
 #include "internal.h"
 #include "ip.h"
@@ -38,6 +40,22 @@ static struct in_addr real_local_ipaddr;
 static struct in_addr real_log_ipaddr;
 
 static int log_packets;
+static int packet_loss;
+
+static int is_positive_numeric( char *string )
+{
+	if ( ! *string )
+		return 0;
+
+	while ( *string ) {
+		if ( ! isdigit( *string ) )
+			return 0;
+		string++;
+	}
+		
+	return 1;
+}
+
 
 static void set_my_ipaddr()
 {
@@ -137,6 +155,10 @@ static int send_udp_packet( ipaddr_t dst, void *data, int len )
 	struct sockaddr_in to;
 	int port, result;
 
+	/* Packet Loss */
+	if ( ( random() % 100 ) < packet_loss )
+		return len;
+
 	port = BASE_PORT + ( ntohl(dst) & 0xffff ) - 1;
 
 	bzero( &to, sizeof( to ) );
@@ -194,6 +216,27 @@ static void check_packet_logging()
 }
 
 
+static void set_packet_loss()
+{
+	char *env;
+	struct timeval t;
+
+	gettimeofday( &t, NULL );
+
+	srandom( t.tv_sec ^ t.tv_usec );
+
+	env = getenv( "PACKET_LOSS" );
+	if ( env ) {
+		packet_loss = atoi( env );
+		if ( ( !  is_positive_numeric( env ) ) || packet_loss > 100 ) {
+			printf( "Packet loss must be a valid percentage (0-100).\n" );
+			exit( EXIT_FAILURE );
+		}
+	}
+}
+
+
+
 int ip_init()
 {
 	set_my_ipaddr();
@@ -201,6 +244,7 @@ int ip_init()
 	create_sending_socket();
 	create_listening_socket();
 	check_packet_logging();
+	set_packet_loss();
 
 	return 0;
 }
