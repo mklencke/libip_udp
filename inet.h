@@ -43,13 +43,5 @@ u16_t ntohs( u16_t );
 u32_t htonl( u32_t );
 u32_t ntohl( u32_t );
 
-#define iphdr_t ip_header_t
-typedef struct {
-	unsigned char protocol;
-	unsigned char checksum;
-	ipaddr_t      source;
-	ipaddr_t      destination;
-} ip_header_t;
-
 #endif
 

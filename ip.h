@@ -24,6 +24,10 @@
 #include "compat.h"
 #include "inet.h"
 
+typedef struct {
+	char blob[20];
+} iphdr_t;
+
 int ip_init();
 
 int ip_send( ipaddr_t dst, unsigned short proto, unsigned short id, void *data,

@@ -29,6 +29,14 @@
 #include "internal.h"
 #include "ip.h"
 
+typedef struct {
+	unsigned char protocol;
+	unsigned char checksum;
+	ipaddr_t      source;
+	ipaddr_t      destination;
+} not_quite_ip_header_t;
+
+
 static int sending_socket;
 static int listening_socket;
 
@@ -177,13 +185,13 @@ int ip_send( ipaddr_t dst, unsigned short proto, unsigned short id, void *data,
 		ip_init();
 	}
 	
-	ip_header_t header;
+	not_quite_ip_header_t header;
 	header.protocol = proto;
 	header.checksum = 0; /* TODO */
 	header.source = my_ipaddr;
 	header.destination = dst;
 
-	header_size = sizeof( ip_header_t );
+	header_size = sizeof( not_quite_ip_header_t );
 	buf = malloc( header_size + len );
 
 	memcpy( buf, &header, header_size );
@@ -207,14 +215,14 @@ int ip_receive( ipaddr_t *srcp, ipaddr_t *dstp, unsigned short *protop,
                 unsigned short *idp, char **data )
 {
 	char buf[UDP_RECEIVE_BUFFER_SIZE];
-	ip_header_t header;
+	not_quite_ip_header_t header;
 	int headerlen, result;
 
 	if ( my_ipaddr == 0 ) {
 		ip_init();
 	}
 
-	headerlen = sizeof( ip_header_t );
+	headerlen = sizeof( not_quite_ip_header_t );
 
 	do {
 		header.destination = 0;
