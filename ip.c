@@ -41,6 +41,7 @@ static struct in_addr real_log_ipaddr;
 
 static int log_packets;
 static int packet_loss;
+static int packet_corruption;
 
 static int is_positive_numeric( char *string )
 {
@@ -155,10 +156,6 @@ static int send_udp_packet( ipaddr_t dst, void *data, int len )
 	struct sockaddr_in to;
 	int port, result;
 
-	/* Packet Loss */
-	if ( ( random() % 100 ) < packet_loss )
-		return len;
-
 	port = BASE_PORT + ( ntohl(dst) & 0xffff ) - 1;
 
 	bzero( &to, sizeof( to ) );
@@ -216,26 +213,29 @@ static void check_packet_logging()
 }
 
 
-static void set_packet_loss()
+static int get_percentage_env(const char *name)
 {
 	char *env;
 	struct timeval t;
+	int result;
 
 	gettimeofday( &t, NULL );
 
 	srandom( t.tv_sec ^ t.tv_usec );
 
-	env = getenv( "PACKET_LOSS" );
+	env = getenv( name );
 	if ( env ) {
-		packet_loss = atoi( env );
-		if ( ( !  is_positive_numeric( env ) ) || packet_loss > 100 ) {
-			printf( "Packet loss must be a valid percentage (0-100).\n" );
+		result = atoi( env );
+		if ( ( !  is_positive_numeric( env ) ) || result > 100 ) {
+			printf( "%s must be a valid percentage (0-100).\n",
+			        name );
 			exit( EXIT_FAILURE );
 		}
 	} else
-		packet_loss = 0;
-}
+		result = 0;
 
+	return result;
+}
 
 
 int ip_init()
@@ -245,7 +245,8 @@ int ip_init()
 	create_sending_socket();
 	create_listening_socket();
 	check_packet_logging();
-	set_packet_loss();
+	packet_loss = get_percentage_env("PACKET_LOSS");
+	packet_corruption = get_percentage_env("PACKET_CORRUPTION");
 
 	return 0;
 }
@@ -263,9 +264,15 @@ int ip_send( ipaddr_t dst, unsigned short proto, unsigned short id, void *data,
 	}
 	
 	header.protocol = proto;
-	header.checksum = 0; /* TODO */
 	header.source = my_ipaddr;
 	header.destination = dst;
+	header.flags = 0;
+
+	if ( ( random() % 100 ) < packet_loss )
+		header.flags |= DROP_PACKET;
+
+	if ( ( random() % 100 ) < packet_corruption )
+		header.flags |= CORRUPT_PACKET;
 
 	header_size = sizeof( not_quite_ip_header_t );
 	buf = malloc( header_size + len );
@@ -310,7 +317,15 @@ int ip_receive( ipaddr_t *srcp, ipaddr_t *dstp, unsigned short *protop,
 			continue;
 		
 		memcpy( &header, buf, headerlen );
-	} while ( header.destination != my_ipaddr );
+
+		if ( header.flags & DROP_PACKET )
+			continue;
+
+	} while ( ( header.destination != my_ipaddr ) ||
+	          ( header.flags & DROP_PACKET ));
+
+	if ( header.flags & CORRUPT_PACKET )
+		buf[random()%result] += (random()%250)+5;
 		
 	*srcp = header.source;
 	*dstp = header.destination;

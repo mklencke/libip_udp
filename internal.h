@@ -39,13 +39,15 @@
 
 #define LOCALHOST "127.0.0.1"
 
+#define DROP_PACKET 1
+#define CORRUPT_PACKET 2
 
 ipaddr_t my_ipaddr  = 0;
 unsigned int my_port;
 
 typedef struct {
 	unsigned char protocol;
-	unsigned char checksum;
+	unsigned char flags;
 	ipaddr_t      source;
 	ipaddr_t      destination;
 } not_quite_ip_header_t;

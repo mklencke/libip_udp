@@ -109,10 +109,10 @@ static void log_packet( char *buf, int len )
 	char *source, *destination;
 	int ip_packet = 0, tcp_packet = 0;
 
-	print_time();
 
 	if ( len < sizeof( not_quite_ip_header_t ) )
 	{
+		print_time();
 		printf( "[Tiny packet (<IP header) received]\n\n" );
 		return;
 	}
@@ -120,6 +120,11 @@ static void log_packet( char *buf, int len )
 	header = (not_quite_ip_header_t *)buf;
 	source = (char *)strdup( fake_inet_ntoa( header->source ), 16 );
 	destination = (char *)strdup( fake_inet_ntoa( header->destination ), 16 );
+
+	if ( header->flags & DROP_PACKET ) printf("%c[1;31;40m", 27);
+	else if ( header->flags & CORRUPT_PACKET ) printf("%c[1;33;40m", 27);
+
+	print_time();
 
 	switch ( header->protocol ) {
 		case IP_PROTO_UDP:
@@ -129,7 +134,8 @@ static void log_packet( char *buf, int len )
 		case IP_PROTO_TCP:
 			printf( "[TCP Packet from %s to %s]\n", source, destination,
 			        ntohs( header->protocol ) );
-			log_tcp_packet( buf + sizeof( not_quite_ip_header_t ), len - sizeof( not_quite_ip_header_t ) );
+			log_tcp_packet( buf + sizeof( not_quite_ip_header_t ),
+			                len - sizeof( not_quite_ip_header_t ) );
 			break;
 		default:
 			printf( "[Unidentified IP Packet from %s to %s (protocol: %d)]\n",
@@ -137,6 +143,7 @@ static void log_packet( char *buf, int len )
 			        ntohs( header->protocol ) );
 	}
 
+	if ( header->flags ) printf("%c[0m", 27);
 	printf( "\n" );
 
 	free( source );
