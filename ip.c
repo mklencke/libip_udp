@@ -173,12 +173,12 @@ int ip_send( ipaddr_t dst, unsigned short proto, unsigned short id, void *data,
 	char *buf;
 	size_t header_size;
 	int result;
+	not_quite_ip_header_t header;
 
 	if ( my_ipaddr == 0 ) {
 		ip_init();
 	}
 	
-	not_quite_ip_header_t header;
 	header.protocol = proto;
 	header.checksum = 0; /* TODO */
 	header.source = my_ipaddr;
