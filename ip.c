@@ -33,6 +33,10 @@
 static int sending_socket;
 static int listening_socket;
 
+static struct in_addr real_peer_ipaddr;
+static struct in_addr real_local_ipaddr;
+static struct in_addr real_log_ipaddr;
+
 static int log_packets;
 
 static void set_my_ipaddr()
@@ -58,6 +62,38 @@ static void set_my_ipaddr()
 	}
 
 	my_ipaddr = htonl( 192<<24 | 168<<16 | atoi( eth ) );
+}
+
+
+static void set_real_ip_addresses()
+{
+	char *env;
+	int result;
+	
+	/* localhost ipaddr */
+	inet_aton( LOCALHOST, &real_local_ipaddr );
+
+	/* peer ipaddr */
+	env = getenv( "REAL_PEER_IPADDR" );
+	if ( env ) {
+		result = inet_aton( env, &real_peer_ipaddr );
+		if ( result == 0 ) {
+			printf( "Invalid real peer IP address given.\n" );
+			exit( EXIT_FAILURE );
+		}
+	} else
+		real_peer_ipaddr = real_local_ipaddr;
+
+	/* log ipaddr */
+	env = getenv( "REAL_LOG_IPADDR" );
+	if ( env ) {
+		result = inet_aton( env, &real_log_ipaddr );
+		if ( result == 0 ) {
+			printf( "Invalid real log IP address given.\n" );
+			exit( EXIT_FAILURE );
+		}
+	} else
+		real_log_ipaddr = real_local_ipaddr;
 }
 
 
@@ -105,16 +141,17 @@ static int send_udp_packet( ipaddr_t dst, void *data, int len )
 
 	bzero( &to, sizeof( to ) );
 	to.sin_family = AF_INET;
-	inet_aton( LOCALHOST, &to.sin_addr );
 
 	/* Must log first to avoid wrong order with logged packets */
 	if ( log_packets ) {
+		to.sin_addr = real_log_ipaddr;
 		to.sin_port = htons( LOG_PORT );
 
 		sendto( sending_socket, data, len, 0, (struct sockaddr *)&to,
 		        sizeof( to ) );
 	}
 
+	to.sin_addr = real_peer_ipaddr;
 	to.sin_port = htons( port );
 
 	result = sendto( sending_socket, data, len, 0, (struct sockaddr *)&to,
@@ -160,6 +197,7 @@ static void check_packet_logging()
 int ip_init()
 {
 	set_my_ipaddr();
+	set_real_ip_addresses();
 	create_sending_socket();
 	create_listening_socket();
 	check_packet_logging();
