@@ -50,7 +50,7 @@ u16_t inet_checksum(void *buf, int buflen)
 
 	if (buflen % 2)
 	{
-		*((char *)&sum) = ((char *)buf)[buflen-1];
+		*((u8_t *)&sum) = ((u8_t *)buf)[buflen-1];
 	}
 
 	while (u16_buflen--)
