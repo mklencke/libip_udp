@@ -96,7 +96,7 @@ static void log_tcp_packet( char *buf, int len )
 	printf( "]" );
 
 	if ( len > TCP_HEADER_SIZE )
-		printf( " + DATA" );
+		printf( " + DATA (%u)", ( len - TCP_HEADER_SIZE ) );
 
 	printf( "\n" );
 	
