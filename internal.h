@@ -43,5 +43,13 @@
 ipaddr_t my_ipaddr  = 0;
 unsigned int my_port;
 
+typedef struct {
+	unsigned char protocol;
+	unsigned char checksum;
+	ipaddr_t      source;
+	ipaddr_t      destination;
+} not_quite_ip_header_t;
+
+
 #endif
 

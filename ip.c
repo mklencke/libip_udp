@@ -29,13 +29,6 @@
 #include "internal.h"
 #include "ip.h"
 
-typedef struct {
-	unsigned char protocol;
-	unsigned char checksum;
-	ipaddr_t      source;
-	ipaddr_t      destination;
-} not_quite_ip_header_t;
-
 
 static int sending_socket;
 static int listening_socket;
