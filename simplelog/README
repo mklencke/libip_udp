@@ -1,0 +1,14 @@
+This is a simple packet logger for libip_udp. To use it, do the following at
+the terminal where you want the packets to get logged from and do:
+
+$ export LOG_PACKETS=1
+
+So to log all packets, you have to do this at both the server and the client.
+
+-----------
+BIG WARNING
+-----------
+
+There might be something wrong with the order of the packets. We are
+investigating it.
+
