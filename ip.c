@@ -232,7 +232,8 @@ static void set_packet_loss()
 			printf( "Packet loss must be a valid percentage (0-100).\n" );
 			exit( EXIT_FAILURE );
 		}
-	}
+	} else
+		packet_loss = 0;
 }
 
 
