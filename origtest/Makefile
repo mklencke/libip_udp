@@ -1,15 +1,15 @@
 CC = gcc
 INCLUDE = ..
 CFLAGS = -g -Wall
-OBJECTS = ../inet.o ../ip.o
+LIBS = ../libip.a
 
 default: client server
 
-client: client.c $(OBJECTS)
-	$(CC) -I$(INCLUDE) -o $@ $< $(OBJECTS)
+client: client.c $(LIBS)
+	$(CC) -I$(INCLUDE) -o $@ $< $(LIBS)
 
-server: server.c $(OBJECTS)
-	$(CC) -I$(INCLUDE) -o $@ $< $(OBJECTS)
+server: server.c $(LIBS)
+	$(CC) -I$(INCLUDE) -o $@ $< $(LIBS)
 
 clean:
 	rm client
