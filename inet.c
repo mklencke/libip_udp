@@ -3,8 +3,6 @@
 
 #include "inet.h"
 
-#include <netinet/in.h>
-
 static char ascii_ipaddr_buf[16];
 
 ipaddr_t fake_inet_aton( const char *cp )
@@ -14,7 +12,7 @@ ipaddr_t fake_inet_aton( const char *cp )
 
 char *fake_inet_ntoa( ipaddr_t addr )
 {
-	snprintf(ascii_ipaddr_buf, 16, "0.0.0.%d", ntohl(addr));
+	snprintf(ascii_ipaddr_buf, 16, "0.0.0.%ld", addr);
 	return ascii_ipaddr_buf;
 }
 
