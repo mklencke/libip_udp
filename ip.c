@@ -105,17 +105,20 @@ static int send_udp_packet( ipaddr_t dst, void *data, int len )
 	bzero( &to, sizeof( to ) );
 	to.sin_family = AF_INET;
 	inet_aton( LOCALHOST, &to.sin_addr );
-	to.sin_port = htons( port );
 
-	result = sendto( sending_socket, data, len, 0, (struct sockaddr *)&to,
-	                 sizeof( to ) );
-
+	/* Must log first to avoid wrong order with logged packets */
 	if ( log_packets ) {
 		to.sin_port = htons( LOG_PORT );
 
 		sendto( sending_socket, data, len, 0, (struct sockaddr *)&to,
 		        sizeof( to ) );
 	}
+
+	to.sin_port = htons( port );
+
+	result = sendto( sending_socket, data, len, 0, (struct sockaddr *)&to,
+	                 sizeof( to ) );
+
 		
 	return result;
 }
