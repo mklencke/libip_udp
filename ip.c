@@ -7,7 +7,10 @@
  *
  * It is being developed on Slackware Linux 10.0.
  *
- * Copyright (C) 2004 Marten Klencke
+ * Copyright (C) 2004:
+ * Marten Klencke (mklencke@cs.vu.nl)
+ * Erik Bosman (ejbosman@cs.vu.nl)
+ * 
  * This code is licensed under the GNU LGPL
  *
  */
