@@ -12,6 +12,6 @@ $ ./simplelog
 BIG WARNING
 -----------
 
-There might be something wrong with the order of the packets. We are
-investigating it.
+We're not sure if the order of the logged packets is always right, therefore,
+don't trust this tool too much.
 
