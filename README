@@ -162,6 +162,7 @@ $ svn co https://svn.klencke.net/libip_udp/trunk libip_udp
 
 We are working on some new features for future version:
 
+- Solaris and BSD Support
 - An IP monitor tool. This will allow you to have a nice overview of which
   get sent when and with what data in them.
 - Packet dropping. There will be an environment variable that will allow you
