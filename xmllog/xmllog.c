@@ -156,7 +156,7 @@ static void log_packet( char *buf, int len )
 			printf( "\t\t</tcp>\n" );
 			break;
 		default:
-			printf( "\t\t<protocol>%d</protocol>)]\n",
+			printf( "\t\t<protocol>%d</protocol>\n",
 			        ntohs( header->protocol ) );
 	}
 }
