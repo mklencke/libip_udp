@@ -31,4 +31,5 @@ inet.o: inet.c inet.h $(HEADERS)
 clean:
 	rm *.o
 	rm test
+	rm libip.a
 
