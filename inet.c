@@ -50,7 +50,7 @@ u16_t inet_checksum(void *buf, int buflen)
 
 	if (buflen % 2)
 	{
-		sum += ntohs(htons(u16_buf[u16_buflen])&0xff00);
+		*((char *)&sum) = ((char *)buf)[buflen-1];
 	}
 
 	while (u16_buflen--)
