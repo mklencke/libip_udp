@@ -164,7 +164,7 @@ We are working on some new features for future version:
 
 - Solaris and BSD Support
 - An IP monitor tool. This will allow you to have a nice overview of which
-  get sent when and with what data in them.
+  packets get sent when and with what data in them.
 - Packet dropping. There will be an environment variable that will allow you
   to specify the "reliability" of the virtual link.
 - Packet insertion. A tool to insert extra packets that have nothing to do
