@@ -22,45 +22,24 @@ char *fake_inet_ntoa( ipaddr_t addr )
 	return inet_ntoa(addrstruct);
 }
 
-
-/*** inet_checksum() *********************
- *
- * Copied from inet.c as part of libcn,
- * used for the computer networks course at the VU
- * http://www.cs.vu.nl/~cn/
- *
- * Written by Leendert van Doorn
- */
-
-/*
- * 16-bit one complement check sum
- */
-unsigned short
-inet_checksum(void *dp, int counter)
+u16_t inet_checksum(void *buf, int buflen)
 {
-    register unsigned short *sp;
-    unsigned long sum, oneword = 0x00010000;
-    register int count;
+	u32_t sum=0;
+	u16_t *u16_buf = (u16_t *)buf;
+	int u16_buflen = buflen >> 1;
 
-    count = counter >> 1;
-    for (sum = 0, sp = (unsigned short *)dp; count--; ) {
-	sum += *sp++;
-	if (sum >= oneword) { /* wrap carry into low bit */
-	    sum -= oneword;
-	    sum++;
+	if (buflen % 2)
+	{
+		sum += ntohs(htons(u16_buf[u16_buflen])&0xff00);
 	}
-    }
-    if (counter & 1) {
-#ifdef LITTLE_ENDIAN
-	sum += ((unsigned short) *((char *) sp)) &  0x00ff; 
-#else
-	sum += ((unsigned short) *((char *) sp)) << 8;
-#endif
-	if (sum >= oneword) { /* wrap carry into low bit */
-	    sum -= oneword;
-	    sum++;
+
+	while (u16_buflen--)
+	{
+		sum += u16_buf[u16_buflen];
+		if (sum >= 0x00010000)
+			sum -= 0x0000ffff;
 	}
-    }
-    return ~sum;
+
+	return ~sum;
 }
 
