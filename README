@@ -37,8 +37,9 @@ This is done by sending the IP packets over UDP on localhost.
 In minix, the current ethernet device has to be specified by setting the ETH
 environment variable. This works the same with libip_udp. The number is then
 used to create the UDP port. For example, if ETH contains "1", the UDP port
-will be 2810. Currently, up to 20 virtual ethernet devices can be created this
-way and they can all send packets to eachother.
+will be 2809, if ETH contains "2" the UDP port will be 2810, etc. Currently,
+up to 20 virtual ethernet devices can be created this way and they can all
+send packets to eachother.
 
 Virtual IP addresses are linked to virtual Ethernet devices using a very simple
 scheme. Ethernet device 1 has IP 192.168.0.1, 2 has 192.168.0.2, etc.
