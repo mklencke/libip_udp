@@ -82,7 +82,7 @@ static void log_tcp_packet( char *buf, int len )
 	seq = ntohl( *(u32_t*)(buf+4) );
 	ack = ntohl( *(u32_t*)(buf+8) );
 
-	printf( "            [Seq: %10ld] [Ack: %10ld]", seq, ack );
+	printf( "            [Seq: %10lu] [Ack: %10lu]", seq, ack );
 			
 	printf( " [Flags:" );
 	if ( (u8_t)*(buf+13) & 0x08 )
