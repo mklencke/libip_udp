@@ -71,7 +71,7 @@ static void print_time()
 static void log_tcp_packet( char *buf, int len )
 {
 	/* This contains some pointer arithmetic because we probably are not
-	 * allowed to show publish a tcp_header_t structure */
+	 * allowed to publish a tcp_header_t structure */
 	int ack = 0, seq;
 
 	if ( len < TCP_HEADER_SIZE ) {
