@@ -112,7 +112,8 @@ the percentage of packets to be dropped.
 
 It is possible to connect two programs using libip_udp via the Internet or
 a LAN. To do this, set the REAL_PEER_IPADDR environment variable to the
-other side's IP address.
+other side's IP address. If there is a firewall, make sure the appropriate
+UDP port is open (2809+ETH-1).
 
 The same is possible for the logger. The variable is named REAL_LOG_IPADDR.
 
