@@ -38,17 +38,18 @@ static void set_my_ipaddr()
 		printf( "ETH must be set.\n" );
 		exit( EXIT_FAILURE );
 	}
-	
-	my_ipaddr = atoi( eth );
-	if ( my_ipaddr <= 0 ) {
+	my_port = BASE_PORT + atoi( eth ) - 1;
+	if ( my_port < BASE_PORT ) {
 		printf( "Invalid value for ETH.\n" );
 		exit( EXIT_FAILURE );
 	}
 
-	if ( my_ipaddr > MAX_PORTS ) {
+	if ( my_port >= BASE_PORT + MAX_PORTS ) {
 		printf( "ETH value to high. Max is %d.\n", MAX_PORTS );
 		exit( EXIT_FAILURE );
 	}
+
+	my_ipaddr = htonl( 192<<24 | 168<<16 | atoi( eth ) );
 }
 
 
@@ -65,25 +66,23 @@ static void create_sending_socket()
 static void create_listening_socket()
 {
 	struct sockaddr_in sin;
-	int result, port;
+	int result;
 
 	listening_socket = socket( AF_INET, SOCK_DGRAM, 0 );
 	if ( listening_socket < 0 ) {
 		printf( "Could not create listening UDP socket.\n" );
 		exit( EXIT_FAILURE );
 	}
-
-	port = BASE_PORT + my_ipaddr - 1;
 	
 	bzero( &sin, sizeof( sin ) );
 	sin.sin_family = AF_INET;
-	sin.sin_port = htons( port );
+	sin.sin_port = htons( my_port );
 	sin.sin_addr.s_addr = INADDR_ANY;
 
 	result = bind( listening_socket, (struct sockaddr *)&sin, sizeof( sin ) );
 	if ( result < 0 ) {
-		printf( "Could not bind to virtual IP %d (UDP port %d).\n",
-		        (int)my_ipaddr, port );
+		printf( "Could not bind to virtual IP %s (UDP port %d).\n",
+		        fake_inet_ntoa(my_ipaddr), my_port );
 		exit( EXIT_FAILURE );
 	}
 }
@@ -94,7 +93,7 @@ static int send_udp_packet( ipaddr_t dst, void *data, int len )
 	struct sockaddr_in to;
 	int port, result;
 
-	port = BASE_PORT + dst - 1;
+	port = BASE_PORT + ( ntohl(dst) & 0xffff ) - 1;
 
 	bzero( &to, sizeof( to ) );
 	to.sin_family = AF_INET;

@@ -7,7 +7,7 @@
 
 typedef unsigned long ipaddr_t;
 
-#ifndef __INTERNAL
+#ifndef __DONT_WRAP_FUNCTIONS
 #define inet_aton fake_inet_aton
 #define inet_ntoa fake_inet_ntoa
 #endif

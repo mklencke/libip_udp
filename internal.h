@@ -2,7 +2,7 @@
 #define __LIBIP_UDP_INTERNAL_H
 
 /* Used to detect if real functions need to be wrapped */
-#define __INTERNAL
+#define __DONT_WRAP_FUNCTIONS
 
 #include "inet.h"
 
@@ -14,6 +14,7 @@
 #define LOCALHOST "127.0.0.1"
 
 ipaddr_t my_ipaddr  = 0;
+unsigned int my_port;
 
 #endif
 
