@@ -1,3 +1,7 @@
+Version 0.3.1
+(6 December 2004)
+http://svn.klencke.net/svn/libip_udp/tags/0.3.1
+-----------------------------------------------
 
 - Clearer wording in HTML output.
 - Fix segfault in inet_checksum when called
