@@ -4,6 +4,9 @@ the terminal where you want the packets to get logged from and do:
 $ export LOG_PACKETS=1
 
 So to log all packets, you have to do this at both the server and the client.
+Then start the logger, it will log to stdout:
+
+$ ./simplelog
 
 -----------
 BIG WARNING
