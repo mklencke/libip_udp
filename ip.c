@@ -166,7 +166,7 @@ int ip_send( ipaddr_t dst, unsigned short proto, unsigned short id, void *data,
 int ip_receive( ipaddr_t *srcp, ipaddr_t *dstp, unsigned short *protop,
                 unsigned short *idp, char **data )
 {
-	char buf[8192]; /* FIXME */
+	char buf[8192]; /* FIXME maxlen */
 	ip_header_t header;
 	int headerlen, result;
 
@@ -178,7 +178,7 @@ int ip_receive( ipaddr_t *srcp, ipaddr_t *dstp, unsigned short *protop,
 	header.destination = 0;
 
 	do {
-		result = receive_udp_packet( buf, 8192 );
+		result = receive_udp_packet( buf, 8192 ); /* FIXME maxlen */
 		if ( result < 0 )
 			return result;
 		if ( result < headerlen )
