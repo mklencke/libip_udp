@@ -113,9 +113,6 @@ static void log_tcp_packet( char *buf, int len )
 		printf( "\t\t\t\t<size>%d</size>\n", ( len - TCP_HEADER_SIZE ) );
 		printf( "\t\t\t</data>\n" );
 	}
-
-	printf( "\n" );
-	
 }
 
 
@@ -176,7 +173,7 @@ static void receive_and_log_packet()
 	{
 		printf("\t<packet>\n");
 		log_packet( buf, len );
-		printf("\t</packet>\n");
+		printf("\t</packet>\n\n");
 		fflush( stdout );
 	}
 }
@@ -188,7 +185,7 @@ int main()
 
 	create_listening_socket();
 	printf("<?xml version='1.0' encoding='UTF-8'?>\n" );
-	printf( "<log>\n" );
+	printf( "<log>\n\n" );
 
 	/* Logging loop */
 	while( 1 )
