@@ -121,8 +121,8 @@ static void log_packet( char *buf, int len )
 	source = (char *)strdup( fake_inet_ntoa( header->source ), 16 );
 	destination = (char *)strdup( fake_inet_ntoa( header->destination ), 16 );
 
-	if ( header->flags & DROP_PACKET ) printf("%c[1;31;40m", 27);
-	else if ( header->flags & CORRUPT_PACKET ) printf("%c[1;33;40m", 27);
+	if ( header->flags & DROP_PACKET ) printf("%c[1;30;40m", 27);
+	else if ( header->flags & CORRUPT_PACKET ) printf("%c[1;31;40m", 27);
 
 	print_time();
 
