@@ -18,30 +18,10 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  */
 
-#ifndef __LIBIP_UDP_INTERNAL_H
-#define __LIBIP_UDP_INTERNAL_H
+#ifndef __SIMPLELOG_H
+#define __SIMPLELOG_H
 
-/* Used to detect if real functions need to be wrapped */
-#define __DONT_WRAP_FUNCTIONS
-
-#include "inet.h"
-
-/* Define base port as my birthday :-) */
-#define BASE_PORT 2809
-
-/* Define logging port as Erik's birthday :-) */
-#define LOG_PORT 1211
-
-#define MAX_PORTS 20
-
-/* More than 8192 just to be safe */
-#define UDP_RECEIVE_BUFFER_SIZE 9216
-
-#define LOCALHOST "127.0.0.1"
-
-
-ipaddr_t my_ipaddr  = 0;
-unsigned int my_port;
+#define TCP_HEADER_SIZE 20
 
 #endif
 

@@ -34,14 +34,5 @@ int ip_receive( ipaddr_t *srcp, ipaddr_t *dstp, unsigned short *protop,
 
 extern ipaddr_t my_ipaddr;
 
-#define iphdr_t ip_header_t
-typedef struct {
-	unsigned char protocol;
-	unsigned char checksum;
-	ipaddr_t      source;
-	ipaddr_t      destination;
-} ip_header_t;
-
-
 #endif
 

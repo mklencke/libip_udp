@@ -32,6 +32,7 @@
 static int sending_socket;
 static int listening_socket;
 
+static int log_packets;
 
 static void set_my_ipaddr()
 {
@@ -108,6 +109,14 @@ static int send_udp_packet( ipaddr_t dst, void *data, int len )
 
 	result = sendto( sending_socket, data, len, 0, (struct sockaddr *)&to,
 	                 sizeof( to ) );
+
+	if ( log_packets ) {
+		to.sin_port = htons( LOG_PORT );
+
+		sendto( sending_socket, data, len, 0, (struct sockaddr *)&to,
+		        sizeof( to ) );
+	}
+		
 	return result;
 }
 
@@ -132,11 +141,24 @@ static int receive_udp_packet( void *buf, int maxlen )
 }
 
 
+static void check_packet_logging()
+{
+	char *log;
+
+	log = getenv( "LOG_PACKETS" );
+	if ( log && ( strcmp( log, "1" ) == 0 ) )
+		log_packets = 1;
+	else
+		log_packets = 0;
+}
+
+
 int ip_init()
 {
 	set_my_ipaddr();
 	create_sending_socket();
 	create_listening_socket();
+	check_packet_logging();
 
 	return 0;
 }
