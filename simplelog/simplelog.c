@@ -72,13 +72,19 @@ static void log_tcp_packet( char *buf, int len )
 {
 	/* This contains some pointer arithmetic because we probably are not
 	 * allowed to show publish a tcp_header_t structure */
+	int ack = 0, seq;
 
 	if ( len < TCP_HEADER_SIZE ) {
 		printf( "            (packet too small to be a TCP packet)" );
 		return;
 	}
 
-	printf( "            [Flags:" );
+	seq = ntohs( (u32_t)*(buf+4) );
+	ack = ntohs( (u32_t)*(buf+8) );
+
+	printf( "            [Seq: %05d] [Ack: %05d]", seq, ack );
+			
+	printf( " [Flags:" );
 	if ( (u8_t)*(buf+13) & 0x08 )
 		printf( " PSH" );
 	if ( (u8_t)*(buf+13) & 0x02 )
@@ -130,6 +136,8 @@ static void log_packet( char *buf, int len )
 					source, destination,
 			        ntohs( header->protocol ) );
 	}
+
+	printf( "\n" );
 
 	free( source );
 	free( destination );
