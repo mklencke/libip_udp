@@ -129,11 +129,18 @@ static void create_sending_socket()
 static void create_listening_socket()
 {
 	struct sockaddr_in sin;
-	int result;
+	int result, yes;
 
 	listening_socket = socket( AF_INET, SOCK_DGRAM, 0 );
 	if ( listening_socket < 0 ) {
 		printf( "Could not create listening UDP socket.\n" );
+		exit( EXIT_FAILURE );
+	}
+
+	yes = 1;
+	result = setsockopt( listening_socket, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof( int ) );
+	if ( result != 0 ) {
+		printf( "Could not set SO_REUSEADDR on socket.\n" );
 		exit( EXIT_FAILURE );
 	}
 	
