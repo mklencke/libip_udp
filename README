@@ -130,9 +130,9 @@ Of course, standard UNIX functions like printf(), malloc() and free() can also
 be used because they are defined in POSIX.
 
 
--------------
+------------
 6. Guarantee
--------------
+------------
 
 This library is provided solely as an aid for doing the computer networks
 practicum. We, the authors, give no guarantee whatsoever that code developed
@@ -182,9 +182,9 @@ Website  : http://www.cs.vu.nl/~mklencke/libip_udp.php
 E-Mail   : mklencke@cs.vu.nl
 
 
--------------
+--------------
 10. References
--------------
+--------------
 
 - http://www.cs.vu.nl/~cn/
 - http://www.cs.vu.nl/
