@@ -153,7 +153,7 @@ The latest release can be found on the website (see Contact Information). If
 you want to keep up to date on the development, you may check out the latest
 development revision from Subversion:
 
-$ svn co https://svn.klencke.net/libip_udp/trunk libip_udp
+$ svn co http://svn.klencke.net/svn/libip_udp/trunk libip_udp
 
 
 ------------------
