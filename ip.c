@@ -112,7 +112,17 @@ static int receive_udp_packet( void *buf, int maxlen )
 	struct sockaddr from;
 	int fromlen, result;
 
+	fromlen = sizeof( from );
+
 	result = recvfrom( listening_socket, buf, maxlen, 0, &from, &fromlen );
+
+	if ( result == -1 ) {
+		if ( errno != EINTR ) {
+			printf( "recvfrom() returned an error which was not EINTR but %d\n", errno );
+			exit( EXIT_FAILURE );
+		}
+	}
+	
 	return result;
 }
 
@@ -175,9 +185,10 @@ int ip_receive( ipaddr_t *srcp, ipaddr_t *dstp, unsigned short *protop,
 	}
 
 	headerlen = sizeof( ip_header_t );
-	header.destination = 0;
 
 	do {
+		header.destination = 0;
+
 		result = receive_udp_packet( buf, 8192 ); /* FIXME maxlen */
 		if ( result < 0 )
 			return result;
