@@ -64,7 +64,7 @@
 		<xsl:param name="seq_start"/>
 		<xsl:param name="ack_start"/>
 		<xsl:apply-templates select="flags" />
-		<div class="caption"><xsl:text>Sequence nrs.:</xsl:text></div>
+		<div class="caption"><xsl:text>Seq/Ack nrs.:</xsl:text></div>
 		<div class="info">
 		<xsl:choose>
 			<xsl:when test="seq - $seq_start">
