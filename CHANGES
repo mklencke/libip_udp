@@ -1,5 +1,6 @@
 
-- fix segfault in inet_checksum when called
+- Clearer wording in HTML output.
+- Fix segfault in inet_checksum when called
   when buf[buflen] is at an unallocated page
   and buflen is odd. (hardly ever happens)
 
