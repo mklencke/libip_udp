@@ -29,7 +29,7 @@ inet.o: inet.c inet.h $(HEADERS)
 	$(CC) -I$(INCLUDE) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm *.o
-	rm test
-	rm libip.a
+	-rm *.o
+	-rm test
+	-rm libip.a
 
