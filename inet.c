@@ -24,6 +24,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
+#include <signal.h>
 
 #define __DONT_WRAP_FUNCTIONS
 #include "inet.h"
@@ -63,5 +64,17 @@ u16_t inet_checksum(void *buf, int buflen)
 	}
 
 	return ~sum;
+}
+
+/*
+ * Enforce System V behaviour of the signal
+ * This implementation is just a quick hack.
+ * The GNU libc provides a sysv_signal call,
+ * but this is not available on OSX (and BSD?)
+ */
+sighandler_t fake_signal(int signum, sighandler_t handler)
+{
+	siginterrupt(signum, handler?1:0);
+	return signal(signum, handler);
 }
 

@@ -38,10 +38,27 @@ char *fake_inet_ntoa( ipaddr_t addr );
 
 unsigned short inet_checksum( void *, int );
 
+/*
+ * Some big endian platforms define htons(x) and ntohs(x) as (x)
+ * But they still have these functions in the standard library
+ *
+ */
+
+#ifndef htons
 u16_t htons( u16_t );
+#endif
+
+#ifndef ntohs
 u16_t ntohs( u16_t );
+#endif
+
+#ifndef htonl
 u32_t htonl( u32_t );
+#endif
+
+#ifndef ntohl
 u32_t ntohl( u32_t );
+#endif
 
 #endif
 
