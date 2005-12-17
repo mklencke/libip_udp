@@ -1,4 +1,5 @@
 - OSX (and maybe BSD) support
+- Compile fix for 64bit systems
 
 
 Version 0.3.1
