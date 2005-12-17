@@ -24,9 +24,9 @@
 #include <sys/types.h>
 #include <sys/time.h>
 
-typedef u_int8_t u8_t;
-typedef u_int16_t u16_t;
-typedef u_int32_t u32_t;
+typedef uint8_t u8_t;
+typedef uint16_t u16_t;
+typedef uint32_t u32_t;
 
 typedef void (*sighandler_t)(int);
 sighandler_t fake_signal(int signum, sighandler_t handler);

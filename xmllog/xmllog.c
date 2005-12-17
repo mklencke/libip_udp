@@ -19,6 +19,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <sys/select.h>
 #include <netinet/in.h>
@@ -73,7 +74,7 @@ static void log_tcp_packet( char *buf, int len )
 {
 	/* This contains some pointer arithmetic because we probably are not
 	 * allowed to publish a tcp_header_t structure */
-	int ack = 0, seq;
+	unsigned int ack = 0, seq;
 
 	if ( len < TCP_HEADER_SIZE ) {
 		printf( "\t\t\t<error>Packet Too Small</error>\n" );
@@ -83,7 +84,7 @@ static void log_tcp_packet( char *buf, int len )
 	seq = ntohl( *(u32_t*)(buf+4) );
 	ack = ntohl( *(u32_t*)(buf+8) );
 
-	printf( "\t\t\t<seq>%lu</seq>\n\t\t\t<ack>%lu</ack>\n", seq, ack );
+	printf( "\t\t\t<seq>%u</seq>\n\t\t\t<ack>%u</ack>\n", seq, ack );
 			
 	printf( "\t\t\t<flags>\n" );
 
@@ -119,7 +120,6 @@ static void log_tcp_packet( char *buf, int len )
 static void log_packet( char *buf, int len )
 {
 	not_quite_ip_header_t *header;
-	int ip_packet = 0, tcp_packet = 0;
 
 	print_time();
 
@@ -163,7 +163,8 @@ static void receive_and_log_packet()
 {
 	char buf[UDP_RECEIVE_BUFFER_SIZE];
 	struct sockaddr from;
-	int fromlen, len;
+	socklen_t fromlen;
+	ssize_t len;
 
 	fromlen = sizeof( from );
 

@@ -6,7 +6,7 @@ LIBS = ../libip.a
 default: xmllog
 
 xmllog: xmllog.c $(LIBS)
-	$(CC) -I$(INCLUDE) -o $@ $< $(LIBS)
+	$(CC) $(CFLAGS) -I$(INCLUDE) -o $@ $< $(LIBS)
 
 clean:
 	rm xmllog

@@ -19,6 +19,7 @@
  */
 
 #include <stdio.h>
+#include <string.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
@@ -72,7 +73,7 @@ static void log_tcp_packet( char *buf, int len )
 {
 	/* This contains some pointer arithmetic because we probably are not
 	 * allowed to publish a tcp_header_t structure */
-	int ack = 0, seq;
+	unsigned int ack = 0, seq;
 
 	if ( len < TCP_HEADER_SIZE ) {
 		printf( "            (packet too small to be a TCP packet)" );
@@ -82,7 +83,7 @@ static void log_tcp_packet( char *buf, int len )
 	seq = ntohl( *(u32_t*)(buf+4) );
 	ack = ntohl( *(u32_t*)(buf+8) );
 
-	printf( "            [Seq: %10lu] [Ack: %10lu]", seq, ack );
+	printf( "            [Seq: %10u] [Ack: %10u]", seq, ack );
 			
 	printf( " [Flags:" );
 	if ( (u8_t)*(buf+13) & 0x08 )
@@ -107,8 +108,6 @@ static void log_packet( char *buf, int len )
 {
 	not_quite_ip_header_t *header;
 	char *source, *destination;
-	int ip_packet = 0, tcp_packet = 0;
-
 
 	if ( len < sizeof( not_quite_ip_header_t ) )
 	{
@@ -118,8 +117,8 @@ static void log_packet( char *buf, int len )
 	}
 
 	header = (not_quite_ip_header_t *)buf;
-	source = (char *)strdup( fake_inet_ntoa( header->source ), 16 );
-	destination = (char *)strdup( fake_inet_ntoa( header->destination ), 16 );
+	source = (char *)strdup( fake_inet_ntoa( header->source ) );
+	destination = (char *)strdup( fake_inet_ntoa( header->destination ) );
 
 	if ( header->flags & DROP_PACKET ) printf("%c[1;30;40m", 27);
 	else if ( header->flags & CORRUPT_PACKET ) printf("%c[1;31;40m", 27);
@@ -128,12 +127,10 @@ static void log_packet( char *buf, int len )
 
 	switch ( header->protocol ) {
 		case IP_PROTO_UDP:
-			printf( "[UDP Packet from %s to %s]\n", source, destination,
-			        ntohs( header->protocol ) );
+			printf( "[UDP Packet from %s to %s]\n", source, destination );
 			break;
 		case IP_PROTO_TCP:
-			printf( "[TCP Packet from %s to %s]\n", source, destination,
-			        ntohs( header->protocol ) );
+			printf( "[TCP Packet from %s to %s]\n", source, destination);
 			log_tcp_packet( buf + sizeof( not_quite_ip_header_t ),
 			                len - sizeof( not_quite_ip_header_t ) );
 			break;
@@ -157,7 +154,8 @@ static void receive_and_log_packet()
 {
 	char buf[UDP_RECEIVE_BUFFER_SIZE];
 	struct sockaddr from;
-	int fromlen, len;
+	socklen_t fromlen;
+	ssize_t len;
 
 	fromlen = sizeof( from );
 

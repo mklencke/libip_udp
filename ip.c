@@ -191,7 +191,8 @@ static int send_udp_packet( ipaddr_t dst, void *data, int len )
 static int receive_udp_packet( void *buf, int maxlen )
 {
 	struct sockaddr from;
-	int fromlen, result;
+	socklen_t fromlen;
+	int result;
 
 	fromlen = sizeof( from );
 
