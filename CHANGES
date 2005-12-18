@@ -1,4 +1,10 @@
-- OSX (and maybe BSD) support
+
+Version 0.3.2
+(18 December 2005)
+http://svn.klencke.net/svn/libip_udp/tags/0.3.2
+-----------------------------------------------
+
+- OSX and BSD support
 - Compile fix for 64bit systems
 
 
