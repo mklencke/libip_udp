@@ -161,11 +161,10 @@ Please mail us about any problems you encounter so we can fix them.
 -----------------------------
 
 The latest release can be found on the website (see Contact Information). If
-you want to keep up to date on the development, you may check out the latest
-development revision from Subversion:
+you want to keep up to date on the development, you may clone the latest
+development revision from Git:
 
-$ svn co http://svn.klencke.net/svn/libip_udp/trunk libip_udp
-
+$ git clone git://github.com/mklencke/libip_udp.git
 
 ------------------
 8. Future Versions
