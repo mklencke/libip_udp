@@ -26,7 +26,7 @@
 #define IP_PROTO_UDP 17
 #define IP_PROTO_TCP 6
 
-typedef unsigned long ipaddr_t;
+typedef u32_t ipaddr_t;
 
 #ifndef __DONT_WRAP_FUNCTIONS
 #define inet_aton fake_inet_aton

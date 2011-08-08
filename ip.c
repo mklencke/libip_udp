@@ -256,6 +256,9 @@ int ip_init()
 	packet_loss = get_percentage_env("PACKET_LOSS");
 	packet_corruption = get_percentage_env("PACKET_CORRUPTION");
 
+  if (my_ipaddr)
+    return 1;
+
 	return 0;
 }
 
